@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'quickpen';
+  src: url('./assets/quickpen.otf') format('opentype');
+}
+
+@page {
+  size: A6 landscape;
+  margin: 0;
+}
+
+@media print {
+  .printHide {
+    display: none;
+  }
+  .preview {
+    box-shadow: none;
+    border: none;
+    zoom: 0.75;
+  }
+}
