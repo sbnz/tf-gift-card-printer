@@ -51,11 +51,11 @@ export default function App() {
         </p>
       </aside>
 
-      {/* A6 portrait preview: 397 × 559px at 96dpi */}
-      {/* In print mode this renders as A6 with margin:0 */}
+      {/* Card preview: 104mm × 147mm = 393 × 556px at 96dpi */}
+      {/* In print mode this renders at exact card size with margin:0 */}
       <section
         className='preview relative bg-white shrink-0'
-        style={{ width: '397px', height: '559px' }}
+        style={{ width: '393px', height: '556px' }}
       >
         {/* Values — positioned to land on pre-printed dotted lines */}
         {/* Adjust TOP values (in px) to calibrate after a test print */}
