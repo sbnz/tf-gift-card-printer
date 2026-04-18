@@ -80,8 +80,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '215px',
-          fontSize: '30px',
+          top: '218px',
+          fontSize: '27px',
           lineHeight: '1',
           fontFamily: '"Shadows Into Light", cursive',
         }}>
@@ -94,7 +94,7 @@ export default function App() {
           top: '253px',
           fontSize: '30px',
           lineHeight: '1',
-          fontFamily: '"Shadows Into Light", cursive',
+          fontFamily: '"Source Code Pro", monospace',
         }}>
           {formData.gift_card_code}
         </div>
@@ -102,8 +102,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '295px',
-          fontSize: '30px',
+          top: '298px',
+          fontSize: '27px',
           lineHeight: '1',
           fontFamily: '"Shadows Into Light", cursive',
         }}>
