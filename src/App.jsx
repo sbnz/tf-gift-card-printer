@@ -83,7 +83,7 @@ export default function App() {
           top: '232px',
           fontSize: '13px',
           lineHeight: '1',
-          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontFamily: '"Shadows Into Light", cursive',
         }}>
           {formData.value}
         </div>
@@ -94,7 +94,7 @@ export default function App() {
           top: '270px',
           fontSize: '13px',
           lineHeight: '1',
-          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontFamily: '"Shadows Into Light", cursive',
         }}>
           {formData.gift_card_code}
         </div>
@@ -105,7 +105,7 @@ export default function App() {
           top: '312px',
           fontSize: '13px',
           lineHeight: '1',
-          fontFamily: 'Arial, Helvetica, sans-serif',
+          fontFamily: '"Shadows Into Light", cursive',
         }}>
           {formData.expiration_date}
         </div>
