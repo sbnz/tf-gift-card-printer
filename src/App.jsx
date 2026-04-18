@@ -57,50 +57,51 @@ export default function App() {
         className='preview relative bg-white shrink-0'
         style={{ width: '393px', height: '556px' }}
       >
-        {/* Values — positioned to land on pre-printed dotted lines */}
-        {/* Adjust TOP values (in px) to calibrate after a test print */}
+        {/* Values — positioned ON the dotted lines, after the labels */}
+        {/* TOP = vertical center of each label row, LEFT = after the label text */}
+        {/* Adjust after a test print */}
         <div style={{
           position: 'absolute',
-          left: '52px',   /* ~13mm from left edge */
-          top: '284px',   /* WERT line — adjust after test print */
-          fontSize: '14px',
+          left: '120px',  /* after "WERT*" label */
+          top: '262px',   /* WERT label row */
+          fontSize: '13px',
+          lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
-          letterSpacing: '0.02em',
         }}>
           {formData.value}
         </div>
 
         <div style={{
           position: 'absolute',
-          left: '52px',
-          top: '349px',   /* CODE line — adjust after test print */
-          fontSize: '14px',
+          left: '110px',  /* after "CODE" label */
+          top: '318px',   /* CODE label row */
+          fontSize: '13px',
+          lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
-          letterSpacing: '0.02em',
         }}>
           {formData.gift_card_code}
         </div>
 
         <div style={{
           position: 'absolute',
-          left: '52px',
-          top: '414px',   /* DATUM line — adjust after test print */
-          fontSize: '14px',
+          left: '122px',  /* after "DATUM" label */
+          top: '374px',   /* DATUM label row */
+          fontSize: '13px',
+          lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
-          letterSpacing: '0.02em',
         }}>
           {formData.expiration_date}
         </div>
 
         {/* Screen-only: card background reference (hidden when printing) */}
-        <div className='printHide absolute inset-0 pointer-events-none' style={{ opacity: 0.12 }}>
+        <div className='printHide absolute inset-0 pointer-events-none' style={{ opacity: 0.15 }}>
           <div style={{ position: 'absolute', top: '38%', left: '50%', transform: 'translateX(-50%)', fontSize: '28px', fontWeight: '900', whiteSpace: 'nowrap', fontFamily: 'Georgia, serif' }}>Flowers for you</div>
-          <div style={{ position: 'absolute', top: '47%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>WERT*</div>
-          <div style={{ position: 'absolute', top: '50%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
-          <div style={{ position: 'absolute', top: '57%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>CODE</div>
-          <div style={{ position: 'absolute', top: '60.5%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
-          <div style={{ position: 'absolute', top: '67.5%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>DATUM</div>
-          <div style={{ position: 'absolute', top: '71%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
+          <div style={{ position: 'absolute', top: '262px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>WERT*</div>
+          <div style={{ position: 'absolute', top: '278px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
+          <div style={{ position: 'absolute', top: '318px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>CODE</div>
+          <div style={{ position: 'absolute', top: '334px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
+          <div style={{ position: 'absolute', top: '374px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>DATUM</div>
+          <div style={{ position: 'absolute', top: '390px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
         </div>
 
         {/* Border for screen only */}
