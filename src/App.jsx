@@ -79,8 +79,8 @@ export default function App() {
         {/* Adjust after a test print */}
         <div style={{
           position: 'absolute',
-          left: '120px',  /* after "WERT*" label */
-          top: '262px',   /* WERT label row */
+          left: '110px',
+          top: '245px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
@@ -90,8 +90,8 @@ export default function App() {
 
         <div style={{
           position: 'absolute',
-          left: '110px',  /* after "CODE" label */
-          top: '318px',   /* CODE label row */
+          left: '110px',
+          top: '283px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
@@ -101,8 +101,8 @@ export default function App() {
 
         <div style={{
           position: 'absolute',
-          left: '122px',  /* after "DATUM" label */
-          top: '374px',   /* DATUM label row */
+          left: '110px',
+          top: '325px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
