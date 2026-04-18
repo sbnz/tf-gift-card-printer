@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Input from './components/Input';
 
+function todayFormatted() {
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}.${mm}.${yyyy}`;
+}
+
 export default function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const [formData, setFormData] = useState({
-    gift_card_code: "",
     value: "",
-    expiration_date: "",
+    gift_card_code: "",
+    expiration_date: todayFormatted(),
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,61 +25,86 @@ export default function App() {
   };
   useEffect(() => {
     queryParams.forEach((value, key) => {
-      setFormData(prev => {
-        return { ...prev, [key]: value }
-      })
+      setFormData(prev => ({ ...prev, [key]: value }))
     })
   }, [])
   const handlePrint = () => {
     window.print()
   }
+
   return (
-    <div className='flex flex-row max-w-6xl mx-auto justify-between items-center gap-8 p-8'>
-      <aside className='printHide flex flex-col gap-4 w-64 shrink-0'>
-        <h1 className='text-lg font-bold text-gray-800'>TOM FLOWERS<br />Gift Card Printer</h1>
-        <Input handleChange={handleChange} name="gift_card_code" label="Gift Card Code" value={formData["gift_card_code"]} />
-        <Input handleChange={handleChange} name="value" label="Value (€)" value={formData["value"]} />
-        <Input handleChange={handleChange} name="expiration_date" label="Expiration Date" value={formData["expiration_date"]} />
+    <div className='flex flex-row items-start gap-8 p-8'>
+      {/* Sidebar form */}
+      <aside className='printHide flex flex-col gap-4 w-56 shrink-0'>
+        <h1 className='text-base font-bold text-gray-800'>TOM FLOWERS<br />Gift Card Printer</h1>
+        <Input handleChange={handleChange} name="value" label="Wert (z.B. CHF 50)" value={formData["value"]} />
+        <Input handleChange={handleChange} name="gift_card_code" label="Code" value={formData["gift_card_code"]} />
+        <Input handleChange={handleChange} name="expiration_date" label="Datum" value={formData["expiration_date"]} />
         <button
           className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight hover:bg-gray-50'
           onClick={handlePrint}
         >
           PRINT
         </button>
+        <p className='text-xs text-gray-400 leading-snug'>
+          Lege die vorbedruckte Karte in den Drucker (Rückseite oben). Drucke auf A6.
+        </p>
       </aside>
 
-      <section className='preview flex flex-col w-[745px] h-[529px] shadow-xl border overflow-hidden rounded-sm shrink-0'>
-        {/* Header */}
-        <div className='bg-green-800 text-white flex items-center justify-center py-5'>
-          <span className='font-["quickpen"] text-4xl tracking-wide'>Tom Flowers</span>
+      {/* A6 portrait preview: 397 × 559px at 96dpi */}
+      {/* In print mode this renders as A6 with margin:0 */}
+      <section
+        className='preview relative bg-white shrink-0'
+        style={{ width: '397px', height: '559px' }}
+      >
+        {/* Values — positioned to land on pre-printed dotted lines */}
+        {/* Adjust TOP values (in px) to calibrate after a test print */}
+        <div style={{
+          position: 'absolute',
+          left: '52px',   /* ~13mm from left edge */
+          top: '284px',   /* WERT line — adjust after test print */
+          fontSize: '14px',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          letterSpacing: '0.02em',
+        }}>
+          {formData.value}
         </div>
 
-        {/* Main content */}
-        <div className='flex-1 flex flex-col items-center justify-center gap-5 bg-white'>
-          <span className='text-xs uppercase tracking-[0.3em] text-gray-400'>Geschenkgutschein</span>
-
-          <div className='text-[90px] font-bold text-green-800 leading-none'>
-            {formData.value ? `€\u202F${formData.value}` : '€\u00A0—'}
-          </div>
-
-          <div className='px-8 py-3 border-2 border-green-800 rounded'>
-            <span className='font-mono text-xl tracking-[0.25em] text-green-900'>
-              {formData.gift_card_code || '—'}
-            </span>
-          </div>
-
-          <span className='text-sm text-gray-500'>
-            Gültig bis:{' '}
-            <span className='text-gray-700 font-semibold'>
-              {formData.expiration_date || '—'}
-            </span>
-          </span>
+        <div style={{
+          position: 'absolute',
+          left: '52px',
+          top: '349px',   /* CODE line — adjust after test print */
+          fontSize: '14px',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          letterSpacing: '0.02em',
+        }}>
+          {formData.gift_card_code}
         </div>
 
-        {/* Footer */}
-        <div className='bg-green-800 text-white py-2 text-center'>
-          <span className='text-xs tracking-[0.3em] uppercase'>tomflowers.de</span>
+        <div style={{
+          position: 'absolute',
+          left: '52px',
+          top: '414px',   /* DATUM line — adjust after test print */
+          fontSize: '14px',
+          fontFamily: 'Arial, Helvetica, sans-serif',
+          letterSpacing: '0.02em',
+        }}>
+          {formData.expiration_date}
         </div>
+
+        {/* Screen-only: card background reference (hidden when printing) */}
+        <div className='printHide absolute inset-0 pointer-events-none' style={{ opacity: 0.12 }}>
+          <div style={{ position: 'absolute', top: '38%', left: '50%', transform: 'translateX(-50%)', fontSize: '28px', fontWeight: '900', whiteSpace: 'nowrap', fontFamily: 'Georgia, serif' }}>Flowers for you</div>
+          <div style={{ position: 'absolute', top: '47%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>WERT*</div>
+          <div style={{ position: 'absolute', top: '50%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
+          <div style={{ position: 'absolute', top: '57%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>CODE</div>
+          <div style={{ position: 'absolute', top: '60.5%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
+          <div style={{ position: 'absolute', top: '67.5%', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>DATUM</div>
+          <div style={{ position: 'absolute', top: '71%', left: '52px', right: '52px', borderBottom: '1px dotted #000' }} />
+        </div>
+
+        {/* Border for screen only */}
+        <div className='printHide absolute inset-0 border border-gray-300 pointer-events-none' />
       </section>
     </div>
   )

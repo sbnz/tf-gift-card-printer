@@ -8,17 +8,21 @@
 }
 
 @page {
-  size: A6 landscape;
+  size: A6 portrait;
   margin: 0;
 }
 
 @media print {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
   .printHide {
-    display: none;
+    display: none !important;
   }
   .preview {
-    box-shadow: none;
-    border: none;
-    zoom: 0.75;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
