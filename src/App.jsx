@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Input from './components/Input';
+import cardImg from './assets/card.jpg';
 
 function todayFormatted() {
   const d = new Date();
@@ -11,6 +12,10 @@ function todayFormatted() {
 
 export default function App() {
   const queryParams = new URLSearchParams(window.location.search);
+  const [calibrate, setCalibrate] = useState(false);
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef(null);
+
   const [formData, setFormData] = useState({
     value: "",
     gift_card_code: "",
@@ -46,6 +51,12 @@ export default function App() {
         >
           PRINT
         </button>
+        <button
+          className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight ${calibrate ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'text-gray-500'}`}
+          onClick={() => setCalibrate(c => !c)}
+        >
+          {calibrate ? 'CALIBRATE ON' : 'CALIBRATE OFF'}
+        </button>
         <p className='text-xs text-gray-400 leading-snug'>
           Lege die vorbedruckte Karte in den Drucker (Rückseite oben). Drucke auf A6.
         </p>
@@ -54,8 +65,14 @@ export default function App() {
       {/* Card preview: 104mm × 147mm = 393 × 556px at 96dpi */}
       {/* In print mode this renders at exact card size with margin:0 */}
       <section
+        ref={sectionRef}
         className='preview relative bg-white shrink-0'
-        style={{ width: '393px', height: '556px' }}
+        style={{ width: '393px', height: '556px', cursor: calibrate ? 'crosshair' : 'default' }}
+        onMouseMove={e => {
+          if (!calibrate) return;
+          const rect = sectionRef.current.getBoundingClientRect();
+          setCursor({ x: Math.round(e.clientX - rect.left), y: Math.round(e.clientY - rect.top) });
+        }}
       >
         {/* Values — positioned ON the dotted lines, after the labels */}
         {/* TOP = vertical center of each label row, LEFT = after the label text */}
@@ -93,16 +110,37 @@ export default function App() {
           {formData.expiration_date}
         </div>
 
-        {/* Screen-only: card background reference (hidden when printing) */}
-        <div className='printHide absolute inset-0 pointer-events-none' style={{ opacity: 0.15 }}>
-          <div style={{ position: 'absolute', top: '38%', left: '50%', transform: 'translateX(-50%)', fontSize: '28px', fontWeight: '900', whiteSpace: 'nowrap', fontFamily: 'Georgia, serif' }}>Flowers for you</div>
-          <div style={{ position: 'absolute', top: '262px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>WERT*</div>
-          <div style={{ position: 'absolute', top: '278px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
-          <div style={{ position: 'absolute', top: '318px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>CODE</div>
-          <div style={{ position: 'absolute', top: '334px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
-          <div style={{ position: 'absolute', top: '374px', left: '52px', fontSize: '11px', fontWeight: '700', letterSpacing: '0.15em', fontFamily: 'Arial' }}>DATUM</div>
-          <div style={{ position: 'absolute', top: '390px', left: '52px', right: '52px', borderBottom: '1px dotted #999' }} />
-        </div>
+        {/* Screen-only: card photo background */}
+        <img
+          src={cardImg}
+          className='printHide absolute inset-0 w-full h-full pointer-events-none'
+          style={{ objectFit: 'fill', opacity: 0.5 }}
+          alt=""
+        />
+
+        {/* Calibration overlay */}
+        {calibrate && (
+          <div className='printHide absolute inset-0 pointer-events-none' style={{ zIndex: 10 }}>
+            {/* Crosshair lines */}
+            <div style={{ position: 'absolute', top: cursor.y, left: 0, right: 0, borderTop: '1px solid red' }} />
+            <div style={{ position: 'absolute', left: cursor.x, top: 0, bottom: 0, borderLeft: '1px solid red' }} />
+            {/* Coordinate readout */}
+            <div style={{
+              position: 'absolute',
+              top: cursor.y + 6,
+              left: cursor.x + 6,
+              background: 'red',
+              color: 'white',
+              fontSize: '11px',
+              padding: '2px 5px',
+              borderRadius: '3px',
+              fontFamily: 'monospace',
+              whiteSpace: 'nowrap',
+            }}>
+              x: {cursor.x} / y: {cursor.y}
+            </div>
+          </div>
+        )}
 
         {/* Border for screen only */}
         <div className='printHide absolute inset-0 border border-gray-300 pointer-events-none' />
