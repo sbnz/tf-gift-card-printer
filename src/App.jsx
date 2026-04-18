@@ -80,7 +80,7 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '245px',
+          top: '232px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
@@ -91,7 +91,7 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '283px',
+          top: '270px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
@@ -102,7 +102,7 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '325px',
+          top: '312px',
           fontSize: '13px',
           lineHeight: '1',
           fontFamily: 'Arial, Helvetica, sans-serif',
