@@ -80,8 +80,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '232px',
-          fontSize: '13px',
+          top: '215px',
+          fontSize: '30px',
           lineHeight: '1',
           fontFamily: '"Shadows Into Light", cursive',
         }}>
@@ -91,8 +91,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '270px',
-          fontSize: '13px',
+          top: '253px',
+          fontSize: '30px',
           lineHeight: '1',
           fontFamily: '"Shadows Into Light", cursive',
         }}>
@@ -102,8 +102,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '312px',
-          fontSize: '13px',
+          top: '295px',
+          fontSize: '30px',
           lineHeight: '1',
           fontFamily: '"Shadows Into Light", cursive',
         }}>
