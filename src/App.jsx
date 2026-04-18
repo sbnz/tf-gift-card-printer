@@ -91,8 +91,8 @@ export default function App() {
         <div style={{
           position: 'absolute',
           left: '110px',
-          top: '253px',
-          fontSize: '30px',
+          top: '265px',
+          fontSize: '18px',
           lineHeight: '1',
           fontFamily: '"Source Code Pro", monospace',
         }}>
