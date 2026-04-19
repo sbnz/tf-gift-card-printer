@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Input from './components/Input';
 import cardImg from './assets/card.jpg';
 
-function todayFormatted() {
+function today() {
   const d = new Date();
-  const dd = String(d.getDate()).padStart(2, '0');
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const yyyy = d.getFullYear();
-  return `${dd}.${mm}.${yyyy}`;
+  return {
+    dd: String(d.getDate()).padStart(2, '0'),
+    mm: String(d.getMonth() + 1).padStart(2, '0'),
+    yyyy: String(d.getFullYear()),
+  };
 }
 
-function Card({ value, code, expiration_date, calibrate, cursor, onMouseMove, sectionRef, isLast }) {
+function Card({ value, code, dd, mm, yyyy, calibrate, cursor, onMouseMove, sectionRef, isLast }) {
+  const displayValue = value ? `CHF ${value}.–` : '';
+  const displayDate = (dd || mm || yyyy) ? `${dd}. ${mm}. ${yyyy}` : '';
+
   return (
     <section
       ref={sectionRef}
@@ -32,7 +35,7 @@ function Card({ value, code, expiration_date, calibrate, cursor, onMouseMove, se
         lineHeight: '1',
         fontFamily: '"Shadows Into Light", cursive',
       }}>
-        {value}
+        {displayValue}
       </div>
 
       <div style={{
@@ -54,7 +57,7 @@ function Card({ value, code, expiration_date, calibrate, cursor, onMouseMove, se
         lineHeight: '1',
         fontFamily: '"Shadows Into Light", cursive',
       }}>
-        {expiration_date}
+        {displayDate}
       </div>
 
       {/* Screen-only: card photo background */}
@@ -98,72 +101,113 @@ export default function App() {
   const [calibrate, setCalibrate] = useState(false);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const sectionRef = useRef(null);
+  const t = today();
 
   const [formData, setFormData] = useState({
     value: "",
     gift_card_codes: "",
-    expiration_date: todayFormatted(),
+    dd: t.dd,
+    mm: t.mm,
+    yyyy: t.yyyy,
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
   useEffect(() => {
     queryParams.forEach((value, key) => {
       setFormData(prev => ({ ...prev, [key]: value }))
     })
   }, [])
-  const handlePrint = () => {
-    window.print()
-  }
+
+  const handlePrint = () => { window.print() }
 
   const codes = formData.gift_card_codes
     .split('\n')
     .map(c => c.trim())
     .filter(c => c.length > 0);
-
   const displayCodes = codes.length > 0 ? codes : [''];
+
+  const inputClass = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline";
+  const labelClass = "block text-gray-700 text-sm font-bold mb-1";
 
   return (
     <div className='flex flex-row items-start gap-8 p-8'>
-      {/* Sidebar form */}
+      {/* Sidebar */}
       <aside className='printHide flex flex-col gap-4 w-56 shrink-0'>
         <h1 className='text-base font-bold text-gray-800'>TOM FLOWERS<br />Gift Card Printer</h1>
-        <Input handleChange={handleChange} name="value" label="Wert (z.B. CHF 50)" value={formData["value"]} />
+
+        {/* Value */}
         <div>
-          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="gift_card_codes">
-            Codes (einer pro Zeile)
-          </label>
+          <label className={labelClass} htmlFor="value">Wert (CHF)</label>
+          <input
+            className={inputClass}
+            type="number"
+            id="value"
+            name="value"
+            onChange={handleChange}
+            value={formData.value}
+            placeholder="50"
+          />
+        </div>
+
+        {/* Codes */}
+        <div>
+          <label className={labelClass} htmlFor="gift_card_codes">Codes (einer pro Zeile)</label>
           <textarea
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-mono text-sm"
+            className={`${inputClass} font-mono text-sm`}
             id="gift_card_codes"
             name="gift_card_codes"
             rows={6}
             onChange={handleChange}
-            value={formData["gift_card_codes"]}
-            placeholder={"TF-2025-A1B2\nTF-2025-C3D4\nTF-2025-E5F6"}
+            value={formData.gift_card_codes}
+            placeholder={"TF-2025-A1B2\nTF-2025-C3D4"}
           />
           <p className='text-xs text-gray-400 mt-1'>{displayCodes.filter(c => c).length} Karte(n)</p>
         </div>
-        <Input handleChange={handleChange} name="expiration_date" label="Datum" value={formData["expiration_date"]} />
+
+        {/* Date — three fields */}
+        <div>
+          <label className={labelClass}>Datum</label>
+          <div className='flex gap-2'>
+            <div className='w-12'>
+              <input className={inputClass + ' text-center px-1'} name="dd" maxLength={2} onChange={handleChange} value={formData.dd} placeholder="TT" />
+              <p className='text-xs text-center text-gray-400 mt-0.5'>Tag</p>
+            </div>
+            <div className='w-12'>
+              <input className={inputClass + ' text-center px-1'} name="mm" maxLength={2} onChange={handleChange} value={formData.mm} placeholder="MM" />
+              <p className='text-xs text-center text-gray-400 mt-0.5'>Monat</p>
+            </div>
+            <div className='w-20'>
+              <input className={inputClass + ' text-center px-1'} name="yyyy" maxLength={4} onChange={handleChange} value={formData.yyyy} placeholder="JJJJ" />
+              <p className='text-xs text-center text-gray-400 mt-0.5'>Jahr</p>
+            </div>
+          </div>
+        </div>
+
         <button
           className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight hover:bg-gray-50'
           onClick={handlePrint}
         >
           PRINT
         </button>
-        <button
-          className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight ${calibrate ? 'bg-yellow-100 border-yellow-400 text-yellow-800' : 'text-gray-500'}`}
-          onClick={() => setCalibrate(c => !c)}
-        >
-          {calibrate ? 'CALIBRATE ON' : 'CALIBRATE OFF'}
-        </button>
+
         <p className='text-xs text-gray-400 leading-snug'>
-          Lege die vorbedruckten Karten in den Drucker. Drucke auf A6.
+          Druckformat: 104 × 147 mm (A6 ohne Schnittrand). Lege die vorbedruckten Karten entsprechend in den Drucker.
         </p>
+
+        {/* Calibrate — subtle toggle */}
+        <div className='flex items-center gap-2 pt-1'>
+          <button
+            onClick={() => setCalibrate(c => !c)}
+            className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${calibrate ? 'bg-yellow-400' : 'bg-gray-200'}`}
+          >
+            <span className={`inline-block h-3 w-3 transform rounded-full bg-white shadow transition-transform ${calibrate ? 'translate-x-4' : 'translate-x-0.5'}`} />
+          </button>
+          <span className='text-xs text-gray-400'>Kalibrierung</span>
+        </div>
       </aside>
 
       {/* One card per code */}
@@ -173,7 +217,9 @@ export default function App() {
             key={i}
             value={formData.value}
             code={code}
-            expiration_date={formData.expiration_date}
+            dd={formData.dd}
+            mm={formData.mm}
+            yyyy={formData.yyyy}
             calibrate={calibrate}
             cursor={cursor}
             sectionRef={i === 0 ? sectionRef : null}
