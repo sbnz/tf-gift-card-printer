@@ -20,4 +20,29 @@
   .printHide {
     display: none !important;
   }
+  /* Neutralise the flex wrapper gaps */
+  .cards-wrapper {
+    display: block !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  /* Each card fills exactly one page, no offset */
+  .preview {
+    display: block !important;
+    position: relative !important;
+    width: 104mm !important;
+    height: 147mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  .preview:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
 }

@@ -211,7 +211,7 @@ export default function App() {
       </aside>
 
       {/* One card per code */}
-      <div className='flex flex-col gap-8'>
+      <div className='cards-wrapper flex flex-col gap-8'>
         {displayCodes.map((code, i) => (
           <Card
             key={i}
