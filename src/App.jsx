@@ -30,7 +30,7 @@ function Card({ value, code, dd, mm, yyyy, calibrate, cursor, onMouseMove, secti
       <div style={{
         position: 'absolute',
         left: '110px',
-        top: '218px',
+        top: '213px',
         fontSize: '27px',
         lineHeight: '1',
         fontFamily: '"Shadows Into Light", cursive',
@@ -52,7 +52,7 @@ function Card({ value, code, dd, mm, yyyy, calibrate, cursor, onMouseMove, secti
       <div style={{
         position: 'absolute',
         left: '110px',
-        top: '298px',
+        top: '303px',
         fontSize: '27px',
         lineHeight: '1',
         fontFamily: '"Shadows Into Light", cursive',
