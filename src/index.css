@@ -13,31 +13,33 @@
 }
 
 @media print {
-  html, body {
-    margin: 0;
-    padding: 0;
+  html, body, #root {
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .printHide {
     display: none !important;
   }
-  /* Neutralise the flex wrapper gaps */
+  /* Strip all layout from outer wrappers */
+  .print-wrapper {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
   .cards-wrapper {
     display: block !important;
-    gap: 0 !important;
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
-  /* Each card fills exactly one page, no offset */
+  /* Each card = exactly one page */
   .preview {
     display: block !important;
-    position: relative !important;
     width: 104mm !important;
     height: 147mm !important;
     margin: 0 !important;
     padding: 0 !important;
-    box-shadow: none !important;
-    border: none !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     break-after: page;
     page-break-after: always;
   }
